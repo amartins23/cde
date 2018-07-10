@@ -42,6 +42,8 @@
     <jaxrs:serviceBeans>
       <ref component-id="renderApi"/>
       <ref component-id="resourcesApi"/>
+      <ref component-id="synchronizerApi"/>
+      <ref component-id="pluginsApiApi"/>
     </jaxrs:serviceBeans>
   </jaxrs:server>
 
@@ -50,6 +52,10 @@
   </bean>
   <bean id="resourcesApi" class="org.pentaho.ctools.cde.api.ResourcesApi">
     <property name="resourceMaxAge" value="cde(resource.cache.max.age)"/>
+  </bean>
+  <bean id="synchronizerApi" class="org.pentaho.ctools.cde.api.SynchronizerApi">
+  </bean>
+  <bean id="pluginsApiApi" class="org.pentaho.ctools.cde.api.PluginsApi">
   </bean>
 
   <bean id="cache" class="org.pentaho.ctools.cde.cache.impl.Cache" scope="singleton">
