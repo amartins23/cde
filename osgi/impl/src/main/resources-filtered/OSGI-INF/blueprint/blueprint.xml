@@ -34,6 +34,10 @@
     <reference-listener ref="contentAccessFactory" bind-method="addReadAccess" unbind-method="removeReadAccess"/>
   </reference-list>
 
+  <reference-list interface="org.pentaho.ctools.cpf.repository.bundle.IBundleReadAccess" availability="optional" >
+    <reference-listener ref="contentAccessFactory" bind-method="addReadAccess" unbind-method="removeReadAccess"/>
+  </reference-list>
+
   <reference interface="pt.webdetails.cpf.api.IUserContentAccessExtended" availability="optional">
     <reference-listener ref="contentAccessFactory" bind-method="setUserContentAccess" unbind-method="removeUserContentAccess"/>
   </reference>
