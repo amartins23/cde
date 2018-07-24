@@ -2,6 +2,7 @@
 <blueprint xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xmlns:jaxrs="http://cxf.apache.org/blueprint/jaxrs"
            xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0"
+           xmlns:ext="http://aries.apache.org/blueprint/xmlns/blueprint-ext/v1.0.0"
            xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
            xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0
                                http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
@@ -9,6 +10,9 @@
                                http://aries.apache.org/schemas/blueprint-cm/blueprint-cm-1.1.0.xsd
                                http://cxf.apache.org/blueprint/jaxrs
                                http://cxf.apache.org/schemas/blueprint/jaxrs.xsd">
+
+  <!-- Load system property -->
+  <ext:property-placeholder />
 
   <cm:property-placeholder persistent-id="org.pentaho.ctools.cde" update-strategy="reload"
                            placeholder-prefix="cde(" placeholder-suffix=")">
@@ -20,6 +24,22 @@
   <bean id="cdeEngine" class="pt.webdetails.cdf.dd.CdeEngine" scope="singleton" factory-method="getInstance">
     <property name="environment" ref="cdeEnvironment"/>
   </bean>
+
+  <bean id="contentAccessFactory" class="org.pentaho.ctools.cpf.repository.factory.ContentAccessFactory">
+    <argument value="${storage.path}"/>
+    <argument value="cdf"/>
+  </bean>
+
+  <reference-list interface="pt.webdetails.cpf.repository.api.IReadAccess" availability="optional" >
+    <reference-listener ref="contentAccessFactory" bind-method="addReadAccess" unbind-method="removeReadAccess"/>
+  </reference-list>
+
+  <reference interface="pt.webdetails.cpf.api.IUserContentAccessExtended" availability="optional">
+    <reference-listener ref="contentAccessFactory" bind-method="setUserContentAccess" unbind-method="removeUserContentAccess"/>
+  </reference>
+
+  <bean id="fileHandler" class="org.pentaho.ctools.cde.extapi.FileHandler"/>
+
   <bean id="cdeEnvironment" class="org.pentaho.ctools.cde.environment.CdeEnvironment" scope="singleton">
     <property name="pluginResourceLocationManager" ref="pluginResourceLocationManager"/>
     <property name="dataSourceManager" ref="dataSourceManager"/>
@@ -28,8 +48,8 @@
   </bean>
   <bean id="pluginResourceLocationManager" class="org.pentaho.ctools.cde.plugin.resource.PluginResourceLocationManager"/>
   <bean id="dataSourceManager" class="org.pentaho.ctools.cde.datasources.manager.DataSourceManager"/>
-  <reference id="contentAccessFactory" interface="pt.webdetails.cpf.api.IContentAccessFactoryExtended" />
-  <bean id="fileHandler" class="org.pentaho.ctools.cde.extapi.FileHandler"/>
+
+
 
   <bean id="readAccess" class="org.pentaho.ctools.cpf.repository.bundle.ReadAccess">
     <property name="bundle" ref="blueprintBundle"/>

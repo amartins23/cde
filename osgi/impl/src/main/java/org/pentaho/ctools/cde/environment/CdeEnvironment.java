@@ -116,6 +116,10 @@ public class CdeEnvironment implements ICdeEnvironmentExtended {
     return this.fileHandler;
   }
 
+  public void setFileHandler(IFileHandler fileHandler){
+    this.fileHandler = fileHandler;
+  }
+
   @Override
   public IUrlProvider getUrlProvider() {
     logger.fatal( "getUrlProvider() - Not implemented for the OSGi environment" );

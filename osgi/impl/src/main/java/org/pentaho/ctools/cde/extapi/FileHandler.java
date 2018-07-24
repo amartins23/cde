@@ -80,7 +80,7 @@ public class FileHandler implements IFileHandler {
         public String getPath() {
           return finalPath;
         }
-        public InputStream getContents() throws IOException { return bais; }
+        public InputStream getContents() { return bais; }
         public String getTitle() { return finalTitle; }
         public String getDescription() { return finalDescription; }
         public boolean isHidden() {
