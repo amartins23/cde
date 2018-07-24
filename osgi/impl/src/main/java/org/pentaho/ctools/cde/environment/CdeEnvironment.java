@@ -31,7 +31,7 @@ import pt.webdetails.cdf.dd.util.Utils;
 import pt.webdetails.cpf.PluginEnvironment;
 import pt.webdetails.cpf.bean.IBeanFactory;
 import pt.webdetails.cpf.context.api.IUrlProvider;
-import pt.webdetails.cpf.repository.api.IContentAccessFactory;
+import pt.webdetails.cpf.api.IContentAccessFactoryExtended;
 import pt.webdetails.cpf.repository.api.IBasicFile;
 import pt.webdetails.cpf.repository.api.IRWAccess;
 import pt.webdetails.cpf.repository.api.IReadAccess;
@@ -47,12 +47,16 @@ public class CdeEnvironment implements ICdeEnvironmentExtended {
   private static final String PLUGIN = "plugin";
   private static final String DEFAULT_PLUGIN_ID = "cdf";
 
+  private static final String TYPE_BLUEPRINT = "blueprint";
+  private static final String SCHEMA_HTTP = "http";
+
   /* CDE Editor POC - Spike BACKLOG 24374 */
   private static final String DEFAULT_APPLICATION_ID = "/@pentaho/dependencies/1.0/";
 
   private IPluginResourceLocationManager pluginResourceLocationManager;
-  private IContentAccessFactory contentAccessFactory;
+  private IContentAccessFactoryExtended contentAccessFactory;
   private IDataSourceManager dataSourceManager;
+  private IFileHandler fileHandler;
 
   public CdeEnvironment() {
     pluginResourceLocationManager = new PluginResourceLocationManager();
@@ -82,20 +86,24 @@ public class CdeEnvironment implements ICdeEnvironmentExtended {
                                 String scheme ) throws Exception {
     logger.fatal( "getCdfIncludes() - Not implemented for the OSGi environment, using local string instead" );
 
-    /* CDE Editor POC - Spike BACKLOG 24374 */
-    return "\t<!-- cdf-blueprint-script-includes -->\n"
-      + "\t<script language=\"javascript\" type=\"text/javascript\" "
-      + "src=\"/@pentaho/dependencies/1.0/cdf/js/cdf-blueprint-script-includes.js\"></script>\n"
-      + "\t<!-- cdf-blueprint-style-includes -->\n"
-      + "\t<link href=\"/@pentaho/dependencies/1.0/cdf/css/cdf-blueprint-style-includes.css\" rel=\"stylesheet\" "
-      + "type=\"text/css\" />\n"
-      + "\t<!-- cdf-blueprint-ie8style-includes -->\n"
-      + "\t<!--[if lte IE 8]>\n"
-      + "\t  <link href=\"/@pentaho/dependencies/1.0/cdf/css-legacy/blueprint/ie.css\" "
-      + "rel=\"stylesheet\" type=\"text/css\" />\n"
-      + "\t<![endif]-->\n"
-      + "\t<link href=\"/@pentaho/dependencies/1.0/cdf/css/styles.css\" rel=\"stylesheet\" type=\"text/css\" />\n"
-      + "\n";
+    if ( type != null && type.equals( TYPE_BLUEPRINT ) && scheme != null && scheme.equals( SCHEMA_HTTP )) {
+      /* CDE Editor POC - Spike BACKLOG 24374 */
+      return "\t<!-- cdf-blueprint-script-includes -->\n"
+              + "\t<script language=\"javascript\" type=\"text/javascript\" "
+              + "src=\"/@pentaho/dependencies/1.0/cdf/js/cdf-blueprint-script-includes.js\"></script>\n"
+              + "\t<!-- cdf-blueprint-style-includes -->\n"
+              + "\t<link href=\"/@pentaho/dependencies/1.0/cdf/css/cdf-blueprint-style-includes.css\" rel=\"stylesheet\" "
+              + "type=\"text/css\" />\n"
+              + "\t<!-- cdf-blueprint-ie8style-includes -->\n"
+              + "\t<!--[if lte IE 8]>\n"
+              + "\t  <link href=\"/@pentaho/dependencies/1.0/cdf/css-legacy/blueprint/ie.css\" "
+              + "rel=\"stylesheet\" type=\"text/css\" />\n"
+              + "\t<![endif]-->\n"
+              + "\t<link href=\"/@pentaho/dependencies/1.0/cdf/css/styles.css\" rel=\"stylesheet\" type=\"text/css\" />\n"
+              + "\n";
+    }
+
+    return null;
   }
 
   @Override
@@ -105,8 +113,7 @@ public class CdeEnvironment implements ICdeEnvironmentExtended {
 
   @Override
   public IFileHandler getFileHandler() {
-    logger.fatal( "getFileHandler() - Not implemented for the OSGi environment" );
-    return null;
+    return this.fileHandler;
   }
 
   @Override
@@ -221,11 +228,11 @@ public class CdeEnvironment implements ICdeEnvironmentExtended {
   }
 
   @Override
-  public IContentAccessFactory getContentAccessFactory() {
+  public IContentAccessFactoryExtended getContentAccessFactory() {
     return this.contentAccessFactory;
   }
 
-  public void setContentAccessFactory( IContentAccessFactory contentAccessFactory ) {
+  public void setContentAccessFactory( IContentAccessFactoryExtended contentAccessFactory ) {
     this.contentAccessFactory = contentAccessFactory;
   }
 

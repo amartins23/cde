@@ -24,10 +24,12 @@
     <property name="pluginResourceLocationManager" ref="pluginResourceLocationManager"/>
     <property name="dataSourceManager" ref="dataSourceManager"/>
     <property name="contentAccessFactory" ref="contentAccessFactory"/>
+    <property name="fileHandler" ref="fileHandler"/>
   </bean>
   <bean id="pluginResourceLocationManager" class="org.pentaho.ctools.cde.plugin.resource.PluginResourceLocationManager"/>
   <bean id="dataSourceManager" class="org.pentaho.ctools.cde.datasources.manager.DataSourceManager"/>
-  <reference id="contentAccessFactory" interface="pt.webdetails.cpf.repository.api.IContentAccessFactory" />
+  <reference id="contentAccessFactory" interface="pt.webdetails.cpf.api.IContentAccessFactoryExtended" />
+  <bean id="fileHandler" class="org.pentaho.ctools.cde.extapi.FileHandler"/>
 
   <bean id="readAccess" class="org.pentaho.ctools.cpf.repository.bundle.ReadAccess">
     <property name="bundle" ref="blueprintBundle"/>
