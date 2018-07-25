@@ -40,8 +40,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 
-import org.glassfish.jersey.media.multipart.FormDataParam;
-
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.MediaType.MULTIPART_FORM_DATA;
 
@@ -239,29 +237,24 @@ public class SynchronizerApi {
     JsonUtils.buildJsonResult( servletResponse.getOutputStream(), true, cdfStyles.liststyles() );
   }
 
-  /*
   @POST
   @Path( "/saveDashboard" )
   @Consumes( MULTIPART_FORM_DATA )
   @Produces( APPLICATION_JSON )
-  public String saveDashboard( @FormDataParam( MethodParams.FILE ) @DefaultValue( "" ) String file,
-                               @FormDataParam( MethodParams.TITLE ) @DefaultValue( "" ) String title,
-                               @FormDataParam( MethodParams.DESCRIPTION ) @DefaultValue( "" ) String description,
-                               @FormDataParam( MethodParams.DASHBOARD_STRUCTURE ) String cdfStructure,
-                               @FormDataParam( MethodParams.OPERATION ) String operation,
-                               @Context HttpServletResponse response ) throws Exception {
-*/
-  @POST
-  @Path( "/saveDashboard" )
-  @Consumes( MULTIPART_FORM_DATA )
-  @Produces( APPLICATION_JSON )
-  public String saveDashboard(  @Multipart( value = MethodParams.FILE, type = "text/plain") String file,
-                                @Multipart( value = MethodParams.TITLE, type = "text/plain") @DefaultValue( "" ) String title,
-                                @Multipart( value = MethodParams.DESCRIPTION, type = "text/plain") @DefaultValue( "" ) String description,
+  public String saveDashboard(  @Multipart( value = MethodParams.FILE, type = "text/plain", required = false ) String file,
+                                @Multipart( value = MethodParams.TITLE, type = "text/plain", required = false ) String title,
+                                @Multipart( value = MethodParams.DESCRIPTION, type = "text/plain", required = false ) String description,
                                 @Multipart( value = MethodParams.DASHBOARD_STRUCTURE, type = "text/plain" ) String cdfStructure,
-                                @Multipart( value = MethodParams.OPERATION, type = "text/plain") String operation,
+                                @Multipart( value = MethodParams.OPERATION, type = "text/plain" ) String operation,
                                 @Context HttpServletResponse response ) throws Exception {
     final XSSHelper xssHelper = XSSHelper.getInstance();
+
+    if ( file == null ) {
+      file = "";
+    }
+    if ( description == null ) {
+      description = "";
+    }
 
     file = xssHelper.escape( file );
     title = xssHelper.escape( title );
