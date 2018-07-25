@@ -16,6 +16,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.cxf.jaxrs.ext.multipart.Multipart;
 import org.json.JSONException;
 import org.pentaho.ctools.cde.utils.XSSHelper;
 
@@ -238,6 +239,7 @@ public class SynchronizerApi {
     JsonUtils.buildJsonResult( servletResponse.getOutputStream(), true, cdfStyles.liststyles() );
   }
 
+  /*
   @POST
   @Path( "/saveDashboard" )
   @Consumes( MULTIPART_FORM_DATA )
@@ -248,7 +250,17 @@ public class SynchronizerApi {
                                @FormDataParam( MethodParams.DASHBOARD_STRUCTURE ) String cdfStructure,
                                @FormDataParam( MethodParams.OPERATION ) String operation,
                                @Context HttpServletResponse response ) throws Exception {
-
+*/
+  @POST
+  @Path( "/saveDashboard" )
+  @Consumes( MULTIPART_FORM_DATA )
+  @Produces( APPLICATION_JSON )
+  public String saveDashboard(  @Multipart( value = MethodParams.FILE, type = "text/plain") String file,
+                                @Multipart( value = MethodParams.TITLE, type = "text/plain") @DefaultValue( "" ) String title,
+                                @Multipart( value = MethodParams.DESCRIPTION, type = "text/plain") @DefaultValue( "" ) String description,
+                                @Multipart( value = MethodParams.DASHBOARD_STRUCTURE, type = "text/plain" ) String cdfStructure,
+                                @Multipart( value = MethodParams.OPERATION, type = "text/plain") String operation,
+                                @Context HttpServletResponse response ) throws Exception {
     final XSSHelper xssHelper = XSSHelper.getInstance();
 
     file = xssHelper.escape( file );

@@ -45,8 +45,12 @@ public class FileHandler implements IFileHandler {
       String wcdfPath = path.replace( "_tmp", "" );
       wcdfFile = Utils.getSystemOrUserRWAccess( wcdfPath ).getFileInputStream( wcdfPath );
     } else {
+      /* TODO:FIX ME!!
       wcdfFile = getEnv().getPluginSystemReader().getFileInputStream(
+
               DashboardStructure.SYSTEM_PLUGIN_EMPTY_WCDF_FILE_PATH );
+      */
+      wcdfFile = getEnv().getPluginSystemReader().getFileInputStream("resources/empty.wcdf");
 
       // [CDE-130] CDE Dash saves file with name @DASHBOARD_TITLE@
       if ( CdeConstants.DASHBOARD_TITLE_TAG.equals( title ) ) {
