@@ -129,7 +129,37 @@ public class CdeEnvironment implements ICdeEnvironmentExtended {
   @Override
   public IUserSession getUserSession() {
     logger.fatal( "getUserSession() - Not implemented for the OSGi environment" );
-    return null;
+    return new IUserSession() {
+      @Override
+      public String getUserName() {
+        return "admin";
+      }
+
+      @Override
+      public boolean isAdministrator() {
+        return true;
+      }
+
+      @Override
+      public String[] getAuthorities() {
+        return new String[0];
+      }
+
+      @Override
+      public Object getParameter(String s) {
+        return null;
+      }
+
+      @Override
+      public String getStringParameter(String s) {
+        return null;
+      }
+
+      @Override
+      public void setParameter(String s, Object o) {
+
+      }
+    };
   }
 
   @Override
@@ -228,7 +258,7 @@ public class CdeEnvironment implements ICdeEnvironmentExtended {
 
   @Override
   public boolean canCreateContent() {
-    return false;
+    return true;
   }
 
   @Override
