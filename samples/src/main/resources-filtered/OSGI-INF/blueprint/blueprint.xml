@@ -5,10 +5,9 @@
                                http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd">
 
   <!-- Gain access to files available in bundles through CPF IReadAccess -->
-  <service interface="org.pentaho.ctools.cpf.repository.bundle.IBundleReadAccess">
+  <service interface="pt.webdetails.cpf.repository.api.IReadAccess">
     <bean class="org.pentaho.ctools.cpf.repository.bundle.ReadAccess">
       <property name="bundle" ref="blueprintBundle"/>
-      <property name="userContent" value="true"/>
     </bean>
   </service>
 
